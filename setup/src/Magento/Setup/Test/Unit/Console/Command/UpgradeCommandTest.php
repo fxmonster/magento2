@@ -1,41 +1,122 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Setup\Test\Unit\Console\Command;
 
+use Magento\Framework\App\DeploymentConfig;
+use Magento\Framework\App\State as AppState;
+use Magento\Framework\Console\Cli;
 use Magento\Setup\Console\Command\UpgradeCommand;
+use Magento\Setup\Model\Installer;
+use Magento\Setup\Model\InstallerFactory;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class UpgradeCommandTest extends \PHPUnit_Framework_TestCase
+class UpgradeCommandTest extends \PHPUnit\Framework\TestCase
 {
-    public function testExecute()
+    /**
+     * @var DeploymentConfig|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $deploymentConfigMock;
+
+    /**
+     * @var InstallerFactory|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $installerFactoryMock;
+
+    /**
+     * @var Installer|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $installerMock;
+
+    /**
+     * @var AppState|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $appStateMock;
+
+    /**
+     * @var UpgradeCommand
+     */
+    private $upgradeCommand;
+    /**
+     * @var CommandTester
+     */
+    private $commandTester;
+
+    /**
+     * @return void
+     */
+    protected function setUp()
     {
-        $installerFactory = $this->getMock('Magento\Setup\Model\InstallerFactory', [], [], '', false);
-        $objectManagerProvider = $this->getMock('\Magento\Setup\Model\ObjectManagerProvider', [], [], '', false);
-        $objectManager = $this->getMockForAbstractClass('Magento\Framework\ObjectManagerInterface');
-        $configLoader = $this->getMockForAbstractClass('Magento\Framework\ObjectManager\ConfigLoaderInterface');
-        $configLoader->expects($this->once())->method('load')->willReturn(['some_key' => 'some_value']);
-        $state = $this->getMock('Magento\Framework\App\State', [], [], '', false);
-        $state->expects($this->once())->method('setAreaCode')->with('setup');
-        $objectManagerProvider->expects($this->once())->method('get')->willReturn($objectManager);
-        $objectManager->expects($this->once())->method('configure');
-        $state->expects($this->once())->method('setAreaCode')->with('setup');
-        $installer = $this->getMock('Magento\Setup\Model\Installer', [], [], '', false);
-        $installer->expects($this->at(0))->method('updateModulesSequence');
-        $installer->expects($this->at(1))->method('installSchema');
-        $installer->expects($this->at(2))->method('installDataFixtures');
-        $installerFactory->expects($this->once())->method('create')->willReturn($installer);
+        $this->deploymentConfigMock = $this->getMockBuilder(DeploymentConfig::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->installerFactoryMock = $this->getMockBuilder(InstallerFactory::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->installerMock = $this->getMockBuilder(Installer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->installerFactoryMock->expects($this->once())
+            ->method('create')
+            ->willReturn($this->installerMock);
+        $this->appStateMock = $this->getMockBuilder(AppState::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $objectManager->expects($this->exactly(2))
-            ->method('get')
-            ->will($this->returnValueMap([
-                ['Magento\Framework\App\State', $state],
-                ['Magento\Framework\ObjectManager\ConfigLoaderInterface', $configLoader]
-            ]));
+        $this->upgradeCommand = new UpgradeCommand(
+            $this->installerFactoryMock,
+            $this->deploymentConfigMock,
+            $this->appStateMock
+        );
+        $this->commandTester = new CommandTester($this->upgradeCommand);
+    }
 
-        $commandTester = new CommandTester(new UpgradeCommand($installerFactory, $objectManagerProvider));
-        $commandTester->execute([]);
+    /**
+     * @dataProvider executeDataProvider
+     */
+    public function testExecute($options, $deployMode, $expectedString = '')
+    {
+        $this->appStateMock->method('getMode')->willReturn($deployMode);
+        $this->installerMock->expects($this->at(0))
+            ->method('updateModulesSequence');
+        $this->installerMock->expects($this->at(1))
+            ->method('installSchema');
+        $this->installerMock->expects($this->at(2))
+            ->method('installDataFixtures');
+
+        $this->assertSame(Cli::RETURN_SUCCESS, $this->commandTester->execute($options));
+        $this->assertEquals($expectedString, $this->commandTester->getDisplay());
+    }
+
+    /**
+     * @return array
+     */
+    public function executeDataProvider()
+    {
+        return [
+            [
+                'options' => [],
+                'deployMode' => \Magento\Framework\App\State::MODE_PRODUCTION,
+                'expectedString' => 'Please re-run Magento compile command. Use the command "setup:di:compile"'
+                    . PHP_EOL
+            ],
+            [
+                'options' => ['--keep-generated' => true],
+                'deployMode' => \Magento\Framework\App\State::MODE_PRODUCTION,
+                'expectedString' => ''
+            ],
+            [
+                'options' => [],
+                'deployMode' => \Magento\Framework\App\State::MODE_DEVELOPER,
+                'expectedString' => ''
+            ],
+            [
+                'options' => [],
+                'deployMode' => \Magento\Framework\App\State::MODE_DEFAULT,
+                'expectedString' => ''
+            ],
+        ];
     }
 }
