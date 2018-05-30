@@ -29,6 +29,17 @@ interface OrderExtensionInterface extends \Magento\Framework\Api\ExtensionAttrib
     public function setGiftMessage(\Magento\GiftMessage\Api\Data\MessageInterface $giftMessage);
 
     /**
+     * @return string|null
+     */
+    public function getAmazonOrderReferenceId();
+
+    /**
+     * @param string $amazonOrderReferenceId
+     * @return $this
+     */
+    public function setAmazonOrderReferenceId($amazonOrderReferenceId);
+
+    /**
      * @return \Magento\Tax\Api\Data\OrderTaxDetailsAppliedTaxInterface[]|null
      */
     public function getAppliedTaxes();

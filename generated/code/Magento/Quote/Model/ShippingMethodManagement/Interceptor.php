@@ -17,58 +17,6 @@ class Interceptor extends \Magento\Quote\Model\ShippingMethodManagement implemen
     /**
      * {@inheritdoc}
      */
-    public function get($cartId)
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'get');
-        if (!$pluginInfo) {
-            return parent::get($cartId);
-        } else {
-            return $this->___callPlugins('get', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getList($cartId)
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'getList');
-        if (!$pluginInfo) {
-            return parent::getList($cartId);
-        } else {
-            return $this->___callPlugins('getList', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function set($cartId, $carrierCode, $methodCode)
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'set');
-        if (!$pluginInfo) {
-            return parent::set($cartId, $carrierCode, $methodCode);
-        } else {
-            return $this->___callPlugins('set', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function apply($cartId, $carrierCode, $methodCode)
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'apply');
-        if (!$pluginInfo) {
-            return parent::apply($cartId, $carrierCode, $methodCode);
-        } else {
-            return $this->___callPlugins('apply', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function estimateByAddress($cartId, \Magento\Quote\Api\Data\EstimateAddressInterface $address)
     {
         $pluginInfo = $this->pluginList->getNext($this->subjectType, 'estimateByAddress');

@@ -25,24 +25,6 @@ class ProductOptionExtension extends \Magento\Framework\Api\AbstractSimpleObject
     }
 
     /**
-     * @return \Magento\Downloadable\Api\Data\DownloadableOptionInterface|null
-     */
-    public function getDownloadableOption()
-    {
-        return $this->_get('downloadable_option');
-    }
-
-    /**
-     * @param \Magento\Downloadable\Api\Data\DownloadableOptionInterface $downloadableOption
-     * @return $this
-     */
-    public function setDownloadableOption(\Magento\Downloadable\Api\Data\DownloadableOptionInterface $downloadableOption)
-    {
-        $this->setData('downloadable_option', $downloadableOption);
-        return $this;
-    }
-
-    /**
      * @return \Magento\Bundle\Api\Data\BundleOptionInterface[]|null
      */
     public function getBundleOptions()
@@ -75,6 +57,24 @@ class ProductOptionExtension extends \Magento\Framework\Api\AbstractSimpleObject
     public function setConfigurableItemOptions($configurableItemOptions)
     {
         $this->setData('configurable_item_options', $configurableItemOptions);
+        return $this;
+    }
+
+    /**
+     * @return \Magento\Downloadable\Api\Data\DownloadableOptionInterface|null
+     */
+    public function getDownloadableOption()
+    {
+        return $this->_get('downloadable_option');
+    }
+
+    /**
+     * @param \Magento\Downloadable\Api\Data\DownloadableOptionInterface $downloadableOption
+     * @return $this
+     */
+    public function setDownloadableOption(\Magento\Downloadable\Api\Data\DownloadableOptionInterface $downloadableOption)
+    {
+        $this->setData('downloadable_option', $downloadableOption);
         return $this;
     }
 }

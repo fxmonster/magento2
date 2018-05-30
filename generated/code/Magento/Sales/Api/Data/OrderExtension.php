@@ -43,6 +43,24 @@ class OrderExtension extends \Magento\Framework\Api\AbstractSimpleObject impleme
     }
 
     /**
+     * @return string|null
+     */
+    public function getAmazonOrderReferenceId()
+    {
+        return $this->_get('amazon_order_reference_id');
+    }
+
+    /**
+     * @param string $amazonOrderReferenceId
+     * @return $this
+     */
+    public function setAmazonOrderReferenceId($amazonOrderReferenceId)
+    {
+        $this->setData('amazon_order_reference_id', $amazonOrderReferenceId);
+        return $this;
+    }
+
+    /**
      * @return \Magento\Tax\Api\Data\OrderTaxDetailsAppliedTaxInterface[]|null
      */
     public function getAppliedTaxes()

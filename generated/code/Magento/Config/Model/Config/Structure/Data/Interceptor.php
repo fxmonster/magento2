@@ -26,30 +26,4 @@ class Interceptor extends \Magento\Config\Model\Config\Structure\Data implements
             return $this->___callPlugins('merge', func_get_args(), $pluginInfo);
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function get($path = null, $default = null)
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'get');
-        if (!$pluginInfo) {
-            return parent::get($path, $default);
-        } else {
-            return $this->___callPlugins('get', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function reset()
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'reset');
-        if (!$pluginInfo) {
-            return parent::reset();
-        } else {
-            return $this->___callPlugins('reset', func_get_args(), $pluginInfo);
-        }
-    }
 }

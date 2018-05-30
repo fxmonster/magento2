@@ -17,58 +17,6 @@ class Interceptor extends \Mageplaza\Osc\Controller\Index\Index implements \Mage
     /**
      * {@inheritdoc}
      */
-    public function execute()
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'execute');
-        if (!$pluginInfo) {
-            return parent::execute();
-        } else {
-            return $this->___callPlugins('execute', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initDefaultMethods($quote)
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'initDefaultMethods');
-        if (!$pluginInfo) {
-            return parent::initDefaultMethods($quote);
-        } else {
-            return $this->___callPlugins('initDefaultMethods', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function filterMethod($method)
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'filterMethod');
-        if (!$pluginInfo) {
-            return parent::filterMethod($method);
-        } else {
-            return $this->___callPlugins('filterMethod', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultCountryFromLocale()
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'getDefaultCountryFromLocale');
-        if (!$pluginInfo) {
-            return parent::getDefaultCountryFromLocale();
-        } else {
-            return $this->___callPlugins('getDefaultCountryFromLocale', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function dispatch(\Magento\Framework\App\RequestInterface $request)
     {
         $pluginInfo = $this->pluginList->getNext($this->subjectType, 'dispatch');
@@ -76,58 +24,6 @@ class Interceptor extends \Mageplaza\Osc\Controller\Index\Index implements \Mage
             return parent::dispatch($request);
         } else {
             return $this->___callPlugins('dispatch', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOnepage()
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'getOnepage');
-        if (!$pluginInfo) {
-            return parent::getOnepage();
-        } else {
-            return $this->___callPlugins('getOnepage', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getActionFlag()
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'getActionFlag');
-        if (!$pluginInfo) {
-            return parent::getActionFlag();
-        } else {
-            return $this->___callPlugins('getActionFlag', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRequest()
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'getRequest');
-        if (!$pluginInfo) {
-            return parent::getRequest();
-        } else {
-            return $this->___callPlugins('getRequest', func_get_args(), $pluginInfo);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResponse()
-    {
-        $pluginInfo = $this->pluginList->getNext($this->subjectType, 'getResponse');
-        if (!$pluginInfo) {
-            return parent::getResponse();
-        } else {
-            return $this->___callPlugins('getResponse', func_get_args(), $pluginInfo);
         }
     }
 }
